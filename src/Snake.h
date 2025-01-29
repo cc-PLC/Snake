@@ -3,7 +3,7 @@
 #include <vector>
 
 #define EMPTY L"  "
-#define BORDER L"∎ "
+#define BORDER L"≡ "
 #define SNAKE_HEAD L"● "
 #define SNAKE_BODY L"○ "
 #define FOOD L"★ "
@@ -25,9 +25,10 @@ protected:
     COORD coordOrigin;
     std::vector<std::vector<std::wstring>> board;
 
-    size_t score;
     std::vector<Vec2> snake;
+    int updateInterval;
     Vec2 dir;
+    size_t score;
 
 protected:
     void placeFood();

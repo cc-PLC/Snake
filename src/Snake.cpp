@@ -7,7 +7,10 @@ using namespace std;
 
 
 Snake::Snake(size_t sizeX, size_t sizeY):
-    board(sizeY + 2, vector<wstring>(sizeX + 2, EMPTY))
+    board(sizeY + 2, vector<wstring>(sizeX + 2, EMPTY)),
+    updateInterval(200),
+    dir({ 0, 0 }),
+    score(0)
 {
     if (!sizeX || !sizeY) { throw invalid_argument("Invalid size"); }
     setlocale(LC_ALL, "en_US.UTF-8");
@@ -17,8 +20,6 @@ Snake::Snake(size_t sizeX, size_t sizeY):
     this->hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
     this->coordOrigin.X = 0;
     this->coordOrigin.Y = 0;
-
-    this->score = 0;
 
     this->snake.emplace_back(Vec2{ static_cast<int>(sizeX) / 2 + 1, static_cast<int>(sizeY) / 2 + 1});
     for (size_t i = 0; i < board.size(); i++)
@@ -32,9 +33,6 @@ Snake::Snake(size_t sizeX, size_t sizeY):
         }
     }
     this->board[this->snake.front().y][this->snake.front().x] = SNAKE_HEAD;
-
-    this->dir.x = 1;
-    this->dir.y = 0;
 
     this->placeFood();
 }
@@ -83,7 +81,8 @@ void Snake::draw()
     SetConsoleCursorPosition(this->hOuput, this->coordOrigin);
 
     wstringstream ss;
-    ss << L"Score: " << this->score << std::endl;
+    ss << L"=> Score: " << this->score << std::endl;
+    ss << L"=> Speed: " << 1000.f / this->updateInterval << L"          " << std::endl;
     for (size_t i = 0; i < board.size(); i++)
     {
         for (size_t j = 0; j < board[i].size(); j++)
@@ -98,7 +97,6 @@ void Snake::draw()
 void Snake::run()
 {
     system("cls");
-    this->draw();
 
     while (true)
     {
@@ -120,7 +118,11 @@ void Snake::run()
             if (this->dir.x != -1) { this->dir = { 1, 0 }; }
             break;
         case 'q':
-            throw runtime_error("Quit");
+            this->updateInterval *= 1.2;
+            break;
+        case 'e':
+            this->updateInterval *= 0.8;
+            if (this->updateInterval <= 0) { this->updateInterval = 1; }
             break;
         default:
             break;
@@ -128,6 +130,6 @@ void Snake::run()
 
         this->move(this->dir.x, this->dir.y);
         this->draw();
-        WaitForSingleObject(this->hEvent, 250);
+        WaitForSingleObject(this->hEvent, this->updateInterval);
     }
 }
