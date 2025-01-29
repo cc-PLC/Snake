@@ -3,7 +3,7 @@
 #include <vector>
 
 #define EMPTY L"  "
-#define BORDER L"◯ "
+#define BORDER L"○ "
 #define SNAKE_HEAD L"◙ "
 #define SNAKE_BODY L"● "
 #define FOOD L"★ "
