@@ -119,10 +119,10 @@ void Snake::run()
             break;
         case 'q':
             this->speed -= 1;
+            if (this->speed == 0) { this->speed = 1; }
             break;
         case 'e':
             this->speed += 1;
-            if (this->speed <= 0) { this->speed = 5; }
             break;
         default:
             break;
