@@ -13,6 +13,7 @@ Snake::Snake(size_t sizeX, size_t sizeY):
     setlocale(LC_ALL, "en_US.UTF-8");
     srand(time(nullptr));
 
+    this->hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     this->hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
     this->coordOrigin.X = 0;
     this->coordOrigin.Y = 0;
@@ -127,6 +128,6 @@ void Snake::run()
 
         this->move(this->dir.x, this->dir.y);
         this->draw();
-        Sleep(250);
+        WaitForSingleObject(this->hEvent, 250);
     }
 }

@@ -3,9 +3,9 @@
 #include <vector>
 
 #define EMPTY L"  "
-#define BORDER L"○ "
-#define SNAKE_HEAD L"◙ "
-#define SNAKE_BODY L"● "
+#define BORDER L"∎ "
+#define SNAKE_HEAD L"● "
+#define SNAKE_BODY L"○ "
 #define FOOD L"★ "
 
 
@@ -20,6 +20,7 @@ public:
     };
 
 protected:
+    HANDLE hEvent;
     HANDLE hOuput;
     COORD coordOrigin;
     std::vector<std::vector<std::wstring>> board;

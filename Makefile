@@ -25,7 +25,7 @@ DIR_OBJ := ./obj
 DIRS := $(DIR_OBJ)
 
 # The files
-EXECUTABLE	:= Snake
+EXECUTABLE	:= Snake.exe
 SRCS		:= $(wildcard $(DIR_SRC)/*.cpp)
 OBJS		:= $(patsubst $(DIR_SRC)/%.cpp,$(DIR_OBJ)/%.o,$(SRCS))
 OBJS		:= $(filter-out $(DIR_OBJ)/main.o,$(OBJS))
@@ -33,14 +33,14 @@ OBJS		:= $(filter-out $(DIR_OBJ)/main.o,$(OBJS))
 
 # MAKE SURE YOU `CLEAN` BEFORE CHANGING MODE!!!
 
-# ===== Debug mode (default) =====
-debug:		CFLAGS	+= -g -Wall
-debug:		routine
-# ======== Release mode ==========
+# ==== Release mode (default) ====
 release:	CFLAGS	+= -O3 -DRELEASE_MODE
 release:	LDFLAGS	+= -O3 -s -static -static-libgcc -static-libstdc++
 release:	routine
-# =================================
+# ========== Debug mode ==========
+debug:		CFLAGS	+= -g -Wall
+debug:		routine
+# ================================
 
 routine: check-directories $(EXECUTABLE)
 

@@ -6,12 +6,17 @@ using namespace std;
 
 int main()
 {
-    Snake snake(20, 20);
+    size_t sizeX, sizeY;
+    printf("Set the size (e.g. 10 10): ");
+    std::cin >> sizeX >> sizeY;
+    getchar();
+
+    Snake snake(sizeX, sizeY);
     try { snake.run(); }
     catch (const runtime_error& e) { cout << e.what() << endl; }
 
     printf("Press Enter to exit...");
-    scanf_s("%*c");
+    getchar();
 
     return 0;
 }
