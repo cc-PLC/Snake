@@ -3,10 +3,10 @@
 #include <vector>
 
 #define EMPTY L"  "
-#define BORDER L"≡ "
-#define SNAKE_HEAD L"● "
-#define SNAKE_BODY L"○ "
-#define FOOD L"★ "
+#define BORDER L"X "
+#define SNAKE_HEAD L"@ "
+#define SNAKE_BODY L"O "
+#define FOOD L"$ "
 
 
 class Snake
@@ -26,7 +26,7 @@ protected:
     std::vector<std::vector<std::wstring>> board;
 
     std::vector<Vec2> snake;
-    int updateInterval;
+    size_t speed;
     Vec2 dir;
     size_t score;
 

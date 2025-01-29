@@ -8,7 +8,7 @@ using namespace std;
 
 Snake::Snake(size_t sizeX, size_t sizeY):
     board(sizeY + 2, vector<wstring>(sizeX + 2, EMPTY)),
-    updateInterval(200),
+    speed(5),
     dir({ 0, 0 }),
     score(0)
 {
@@ -61,7 +61,7 @@ void Snake::move(int deltaX, int deltaY)
     this->snake.insert(this->snake.begin(), { this->snake.front().x + deltaX, this->snake.front().y + deltaY });
     if (this->board[this->snake.front().y][this->snake.front().x] == FOOD)
     {
-        ++this->score;
+        this->score += this->speed * this->speed;
         this->placeFood();
     }
     else
@@ -82,7 +82,7 @@ void Snake::draw()
 
     wstringstream ss;
     ss << L"=> Score: " << this->score << std::endl;
-    ss << L"=> Speed: " << 1000.f / this->updateInterval << L"          " << std::endl;
+    ss << L"=> Speed: " << this->speed << L"          " << std::endl;
     for (size_t i = 0; i < board.size(); i++)
     {
         for (size_t j = 0; j < board[i].size(); j++)
@@ -118,11 +118,11 @@ void Snake::run()
             if (this->dir.x != -1) { this->dir = { 1, 0 }; }
             break;
         case 'q':
-            this->updateInterval *= 1.2;
+            this->speed -= 1;
             break;
         case 'e':
-            this->updateInterval *= 0.8;
-            if (this->updateInterval <= 0) { this->updateInterval = 1; }
+            this->speed += 1;
+            if (this->speed <= 0) { this->speed = 5; }
             break;
         default:
             break;
@@ -130,6 +130,6 @@ void Snake::run()
 
         this->move(this->dir.x, this->dir.y);
         this->draw();
-        WaitForSingleObject(this->hEvent, this->updateInterval);
+        WaitForSingleObject(this->hEvent, 1000 / this->speed);
     }
 }
