@@ -20,8 +20,9 @@ public:
     };
 
 protected:
-    HANDLE hEvent;
-    HANDLE hOuput;
+    HANDLE* phEvent = nullptr;
+    HANDLE* phOutput = nullptr;
+
     COORD coordOrigin;
     std::vector<std::vector<std::wstring>> board;
 
@@ -35,8 +36,7 @@ protected:
     void move(int deltaX, int deltaY);
     void draw();
 public:
-    Snake(size_t sizeX, size_t sizeY);
-    ~Snake();
+    Snake(HANDLE* phEvent, HANDLE* phOutput, size_t sizeX, size_t sizeY);
 
     void run();
 

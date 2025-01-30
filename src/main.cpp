@@ -1,4 +1,7 @@
+#include "Menu.h"
 #include "Snake.h"
+#include <windows.h>
+#include <conio.h>
 
 using namespace std;
 
@@ -6,18 +9,20 @@ using namespace std;
 
 int main()
 {
-    size_t sizeX, sizeY;
-    printf("W,A,S,D to move; Q to decrease speed, E to increase speed\n");
-    printf("Set the size (e.g. 20 20): ");
-    std::cin >> sizeX >> sizeY;
-    getchar();
+    HANDLE hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    Snake snake(sizeX, sizeY);
-    try { snake.run(); }
-    catch (const runtime_error& e) { cout << e.what() << endl; }
+    Menu menu(&hEvent, &hOuput);
+    menu.run();
 
-    printf("Press Enter to exit...");
-    getchar();
+    while (true)
+    {
+        Snake snake(&hEvent, &hOuput, menu.getSizeX(), menu.getSizeY());
+        try { snake.run(); }
+        catch (const runtime_error& e) { printf("\t%s\n", e.what()); }
+        printf("\tPress any key to restart...");
+        _getch();
+    }
 
     return 0;
 }

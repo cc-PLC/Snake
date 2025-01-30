@@ -25,7 +25,7 @@ DIR_OBJ := ./obj
 DIRS := $(DIR_OBJ)
 
 # The files
-EXECUTABLE	:= Snake.1.2.exe
+EXECUTABLE	:= Snake.1.3.exe
 SRCS		:= $(wildcard $(DIR_SRC)/*.cpp)
 OBJS		:= $(patsubst $(DIR_SRC)/%.cpp,$(DIR_OBJ)/%.o,$(SRCS))
 OBJS		:= $(filter-out $(DIR_OBJ)/main.o,$(OBJS))

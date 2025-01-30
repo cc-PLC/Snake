@@ -6,7 +6,10 @@ using namespace std;
 
 
 
-Snake::Snake(size_t sizeX, size_t sizeY):
+Snake::Snake(HANDLE* phEvent, HANDLE* phOutput, size_t sizeX, size_t sizeY):
+    phEvent(phEvent),
+    phOutput(phOutput),
+    coordOrigin({ 0, 0 }),
     board(sizeY + 2, vector<wstring>(sizeX + 2, EMPTY)),
     speed(5),
     dir({ 0, 0 }),
@@ -15,11 +18,6 @@ Snake::Snake(size_t sizeX, size_t sizeY):
     if (!sizeX || !sizeY) { throw invalid_argument("Invalid size"); }
     setlocale(LC_ALL, "en_US.UTF-8");
     srand(time(nullptr));
-
-    this->hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-    this->hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
-    this->coordOrigin.X = 0;
-    this->coordOrigin.Y = 0;
 
     this->snake.emplace_back(Vec2{ static_cast<int>(sizeX) / 2 + 1, static_cast<int>(sizeY) / 2 + 1});
     for (size_t i = 0; i < board.size(); i++)
@@ -36,8 +34,6 @@ Snake::Snake(size_t sizeX, size_t sizeY):
 
     this->placeFood();
 }
-
-Snake::~Snake() {}
 
 
 void Snake::placeFood()
@@ -78,11 +74,20 @@ void Snake::move(int deltaX, int deltaY)
 
 void Snake::draw()
 {
-    SetConsoleCursorPosition(this->hOuput, this->coordOrigin);
+    SetConsoleCursorPosition(*this->phOutput, this->coordOrigin);
+
+    printf(
+        "=============================\n"
+        "|         Snake Game        |\n"
+        "|                           |  Score: %zu\n"
+        "| W,A,S,D to move           |\n"
+        "| Q to decrease speed       |  Speed: %zu          \n"
+        "| E to increase speed       |\n"
+        "=============================\n\n",
+        this->score, this->speed
+    );
 
     wstringstream ss;
-    ss << L"=> Score: " << this->score << std::endl;
-    ss << L"=> Speed: " << this->speed << L"          " << std::endl;
     for (size_t i = 0; i < board.size(); i++)
     {
         for (size_t j = 0; j < board[i].size(); j++)
@@ -102,7 +107,7 @@ void Snake::run()
     {
         // getinput
         char input = '\0';
-        if (_kbhit()) { input = _getch(); }
+        if (_kbhit()) { input = _getch(); } // Test "_kbhit" for non-blocking input
         switch (input)
         {
         case 'w':
@@ -130,6 +135,6 @@ void Snake::run()
 
         this->move(this->dir.x, this->dir.y);
         this->draw();
-        WaitForSingleObject(this->hEvent, 1000 / this->speed);
+        WaitForSingleObject(*this->phEvent, 1000 / this->speed);
     }
 }
