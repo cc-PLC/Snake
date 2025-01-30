@@ -12,6 +12,11 @@ int main()
     HANDLE hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
 
+    CONSOLE_CURSOR_INFO     cursorInfo;
+    GetConsoleCursorInfo(hOuput, &cursorInfo);
+    cursorInfo.bVisible = false; // Set the cursor visibility
+    SetConsoleCursorInfo(hOuput, &cursorInfo);
+
     Menu menu(&hEvent, &hOuput);
     menu.run();
 

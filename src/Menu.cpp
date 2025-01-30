@@ -38,10 +38,10 @@ void Menu::run()
 
         printf("%s\n", prompt);
 
-        printf("  Set the size (X, Y):\n");
-        printf(" %s%d          \n", currentSelection == 0 ? ">" : " ", this->sizeX);
-        printf(" %s%d          \n", currentSelection == 1 ? ">" : " ", this->sizeY);
-        printf(" %sStart!", currentSelection == 2 ? ">" : " ");
+        printf("  Set the board size:\n");
+        printf("  %sX: %d          \n", currentSelection == 0 ? ">" : " ", this->sizeX);
+        printf("  %sY: %d          \n", currentSelection == 1 ? ">" : " ", this->sizeY);
+        printf("  %sStart!", currentSelection == 2 ? ">" : " ");
 
         char input = '\0';
         if (_kbhit()) { input = _getch(); } // Test "_kbhit" for non-blocking input
